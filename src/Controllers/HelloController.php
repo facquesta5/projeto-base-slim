@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Services\HelloService;
 
 class HelloController
@@ -15,7 +15,7 @@ class HelloController
         $this->service = new HelloService();
     }
 
-    public function index(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function index(Request $request,Response $response): Response 
     {
         $message = $this->service->getMessage();
         $response->getBody()->write($message);
