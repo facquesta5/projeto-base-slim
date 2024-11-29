@@ -22,13 +22,5 @@ class HelloController
         return $response->withHeader('Content-Type', 'text/plain');
     }
 
-    public function testDb()
-    {
-        $service = new HelloService();
-        $data = $service->fetchData();
-
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-    }
+    
 }
