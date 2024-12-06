@@ -92,6 +92,11 @@
             flex-direction: column;
         }
 
+        /*Register*/
+        #register {
+            color: #fff;
+        }
+
         /* Ajustar o espaçamento dos botões */
         .d-md-flex .btn {
             margin-top: 20px;
@@ -346,6 +351,17 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Validação simples para garantir que as senhas coincidam
+        document.getElementById('register-form').addEventListener('submit', function(event) {
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-password-confirm').value;
+
+            if (password !== confirmPassword) {
+                event.preventDefault(); // Impede o envio do formulário
+                alert("As senhas não coincidem. Por favor, tente novamente.");
+            }
+        });
+
         // Atualiza o valor do plano selecionado
         function updatePlanValue() {
             const select = document.getElementById('selected-plan');
