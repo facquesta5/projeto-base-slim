@@ -1,0 +1,5 @@
+php -S localhost:8000 -t public  
+
+phpmyadmin:
+Para iniciar o phpmyadmin, primeiramente rode o comando acima, depois, inicie o apache do xampp
+em seguida http://localhost/phpmyadmin

@@ -7,10 +7,11 @@ use App\Controllers\DatabaseController;
 use App\Controllers\IndexController;
 
 return function (App $app): void {
+    $app->get('/', [IndexController::class, 'index']); 
+
     $app->get('/hello', [HelloController::class, 'index']);
 
     $app->get('/test-db', [DatabaseController::class, 'testDb']);
-
-    $app->get('/', [IndexController::class, 'index']); // Rota para a página inicial
+    
     
 };

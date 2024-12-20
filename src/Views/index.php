@@ -57,29 +57,29 @@
         }
 
         /* Garantir que os cartões dentro da seção 'Como Usar' tenham a mesma altura */
-        #como-usar .row {
+        #como-funciona .row {
             display: flex;
             flex-wrap: wrap;
         }
 
-        #como-usar .card {
+        #como-funciona .card {
             display: flex;
             flex-direction: column;
             height: 100%;
         }
 
-        #como-usar .col-md-6 {
+        #como-funciona .col-md-6 {
             display: flex;
             align-items: stretch;
             /* Faz os itens se esticarem para ter a mesma altura */
         }
 
-        #como-usar .flex-grow-1 {
+        #como-funciona .flex-grow-1 {
             flex-grow: 1;
             /* Faz com que os cards ocupem o mesmo espaço, independentemente do conteúdo */
         }
 
-        #como-usar .card h4 i {
+        #como-funciona .card h4 i {
             font-size: 1.5rem;
             /* Ajuste o tamanho do ícone */
             color: #007bff;
@@ -93,7 +93,7 @@
         }
 
         /*Register*/
-        #register {
+        #register-app {
             color: #fff;
         }
 
@@ -115,13 +115,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
+                        <a class="nav-link" href="#como-funciona">Como funciona</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#register-app">Registre-se</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#planos">Planos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#register">Registre-se</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#como-usar">Modo de usar</a>
                     </li>
                 </ul>
             </div>
@@ -133,13 +133,13 @@
         <div class="container">
             <h1>Monitore Perfis do Instagram com Facilidade</h1>
             <p>Descubra quem são os novos seguidores ou quais novas contas seu perfil favorito está seguindo.</p>
-            <a href="#como-usar" class="btn btn-light btn-lg mt-3">Saiba Mais</a>
+            <a href="#como-funciona" class="btn btn-light btn-lg mt-3">Saiba Mais</a>
         </div>
     </section>
 
     <!-- Como Usar Section -->
-    <section id="como-usar" class="container mt-5">
-        <h2 class="text-center mb-5">Como Usar o Observa</h2>
+    <section id="como-funciona" class="container mt-5">
+        <h2 class="text-center mb-5">Como funciona o Observa</h2>
         <div class="row d-flex">
             <!-- Passo 1: Pré-Requisito -->
             <div class="col-md-6 mb-4 d-flex">
@@ -191,23 +191,23 @@
     </section>
 
     <!-- Cadastro de usuário section -->
-    <section class="container mt-5 mb-5" id="register">
+    <section class="container mt-5 mb-5" id="register-app">
         <div class="form-section" style="background: linear-gradient(to right, #6a11cb, #2575fc)">
-            <h3 class="text-center mb-4">Cadastre-se e tenha acesso total</h3>
+            <h3 class="text-center mb-4">{{ titulo }}</h3>
             <!-- Formulário mais estreito -->
-            <form id="register-form" class="mx-auto" style="max-width: 400px;">
+            <form id="register-form" class="mx-auto" style="max-width: 400px;" @submit.prevent="submitForm">
                 <!-- Email e Senha -->
                 <div class="mb-3">
                     <label for="register-email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="register-email" placeholder="Digite seu email" required>
+                    <input type="email" class="form-control" id="register-email" v-model="email" placeholder="Digite seu email" required>
                 </div>
                 <div class="mb-3">
                     <label for="register-password" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="register-password" placeholder="Crie uma senha" required>
+                    <input type="password" class="form-control" id="register-password" v-model="senha" placeholder="Crie uma senha" required>
                 </div>
                 <div class="mb-3">
                     <label for="register-password-confirm" class="form-label">Confirmar Senha</label>
-                    <input type="password" class="form-control" id="register-password-confirm" placeholder="Confirme sua senha" required>
+                    <input type="password" class="form-control" id="register-password-confirm" v-model="confirmarSenha" placeholder="Confirme sua senha" required>
                 </div>
 
                 <!-- Botões -->
@@ -345,12 +345,66 @@
         </div>
     </footer>
 
-    <!-- Bootstrap Icons (para os ícones no footer) -->
+    <script src="js/vue_desenvolvimento.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Importar Vue.js -->
+
+    
+    <!-- Ou para produção -->
+    <!-- <script src="js/vue.producao.js"></script> -->
+
+    <!-- Seu script para inicializar o Vue -->
     <script>
+        const registerApp = Vue.createApp({
+        data() {
+            return {
+                titulo: "Cadastre-se e tenha acesso total",
+                email: "",
+                senha: "",
+                confirmarSenha: ""
+            };
+        },
+        methods: {
+            async submitForm() {
+                if (this.senha !== this.confirmarSenha) {
+                    alert("As senhas não coincidem. Por favor, tente novamente.");
+                    return;
+                }
+
+                try {
+                    const response = await axios.post('/api/register', {
+                        email: this.email,
+                        senha: this.senha
+                    });
+                    alert("Cadastro realizado com sucesso!");
+                    this.resetForm();
+                } catch (error) {
+                    console.error(error);
+                    alert("Ocorreu um erro ao tentar realizar o cadastro. Tente novamente mais tarde.");
+                }
+            },
+            resetForm() {
+                this.email = "";
+                this.senha = "";
+                this.confirmarSenha = "";
+            }
+        }
+    });
+
+    registerApp.mount("#register-app");
+
+
+
+
+
         // Validação simples para garantir que as senhas coincidam
         document.getElementById('register-form').addEventListener('submit', function(event) {
             const password = document.getElementById('register-password').value;
